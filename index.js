@@ -2,16 +2,26 @@ const express = require("express");
 const app = express();
 const bcrypt = require('bcrypt');
 
+
 const mongoose = require('mongoose');
 mongoose.connect('mongodb+srv://facetree:fHRvTR9SYxWbHDp@cluster0.0z7nf.mongodb.net/facetreedb?retryWrites=true&w=majority',  { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 const db = mongoose.connection;
+//const usersdb = mongoose.connection.collections;
 db.on('error', error => console.error(error));
-db.once('open', () => {
-  let data = db.users.find({});
-  console.log(data)
+db.on('connected', () => {
+  console.log('database is connected successfully');
 });
+db.on('disconnected', () =>{
+  console.log('database is disconnected successfully');
+});
+
+/* db.once('open', () => {
+  console.log('connected to db')
+}); */
+
+module.exports = db;
 
 // app setup
 app.use(express.json())
@@ -54,7 +64,9 @@ app.get('/floor',(req, res) => {
 });
 
 
+var insertRouter = require('./routes/users');
 
+app.use('/', insertRouter);
 
 
 
