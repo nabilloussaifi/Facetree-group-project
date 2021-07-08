@@ -1,1 +1,49 @@
-<a href="/login">Logout</a>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FaceTree Floor</title>
+</head>
+
+<body>
+    <div id="banner">
+        <img src="https://picsum.photos/seed/picsum/375/50" alt="Banner image">
+        <button>
+            <a href="/users/logout">Logout</a>
+        </button>
+        <button>
+            <a href="/users/hall">Hall</a>
+        </button>
+    </div>
+    <div id="avatar">
+        <img src="https://picsum.photos/50" alt="User Photo">
+    </div>
+    <h3>
+        Username
+    </h3>
+
+    <form action="users/floor" method="post">
+        <input type="text" name="Title" id="title" placeholder="Title" required>
+        <input type="text" name="Content" id="content" placeholder="Content" required>
+        <input type="url" name="Image" id="imgurl" placeholder="Image">
+        <button type="Submit" id="submitbtn">Submit</button>
+    </form>
+    <hr>
+    <div class="myposts">
+        <div class="card">
+            <img src="https://picsum.photos/50" alt="" id="postimg">
+            <h5 id="post title">Post Title</h5>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sit placeat doloribus ea deserunt pariatur,
+                expedita laboriosam reiciendis sint veritatis nesciunt.
+            </p>
+            <div id="postdate">07.08.2021</div>
+        </div>
+    </div>
+
+    <script src="/static/assets/js/floor.js"></script>
+</body>
+
+</html>
