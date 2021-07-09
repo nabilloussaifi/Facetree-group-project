@@ -40,7 +40,7 @@ router.post("/register", (req, res) => {
   } else {
     //validation passed
     User.findOne({ email: email }).exec((err, user) => {
-      console.log("we have this user:", user);
+      
       if (user) {
         errors.push({ msg: "email already registered" });
         res.render("register", { errors, name, email, password, password2 });

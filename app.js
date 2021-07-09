@@ -7,6 +7,8 @@ const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
+const Post = require("./models/post.js");
+
 
 mongoose.connect(
   "mongodb+srv://facetree:fHRvTR9SYxWbHDp@cluster0.0z7nf.mongodb.net/facetreedb?retryWrites=true&w=majority",
@@ -55,9 +57,21 @@ app.use((req, res, next) => {
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
 app.use("/floor", require("./routes/floor"));
+
 app.post("/users/floor", (req, res) => {
-  console.log(req.body);
-});
+  //console.log(req.body);
+  const { title, content, img } = req.body;
+  const newPost = new Post({
+    title: title,
+    content: content,
+    img: img,
+  })
+        newPost
+              .save()
+              .then(() => {
+                res.redirect("/floor");
+              })
+            })
 
 // app.use("/", routes);
 // app.use(app.router);

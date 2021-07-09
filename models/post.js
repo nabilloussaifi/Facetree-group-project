@@ -4,6 +4,7 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  
   content: {
     type: String,
     required: false,
@@ -15,6 +16,10 @@ const PostSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now,
+  },
+  author: {
+    type: String,
+    required: true,
   },
 });
 const Post = mongoose.model("post", PostSchema);
