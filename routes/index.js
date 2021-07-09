@@ -14,6 +14,7 @@ router.get("/register", (req, res) => {
 router.get("/floor", (req, res) => {
   res.render("floor");
 });
+
 // hall page
 router.get("/hall", ensureAuthenticated, (req, res) => {
   res.render("hall", {

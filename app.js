@@ -32,10 +32,6 @@ app.use(expressEjsLayout);
 // app.use(express.urlencoded({ extended: false }));
 app.use(express.urlencoded({ extended: true }));
 
-app.post("/floor", (req, res) => {
-  console.log(req.body);
-});
-
 app.use(
   session({
     secret: "secret",
@@ -58,6 +54,14 @@ app.use((req, res, next) => {
 
 app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
+app.use("/floor", require("./routes/floor"));
+app.post("/users/floor", (req, res) => {
+  console.log(req.body);
+});
+
+// app.use("/", routes);
+// app.use(app.router);
+// routes.initialize(app);
 
 app.listen(process.env.PORT || 3000, () =>
   console.log("Server Up and running")
