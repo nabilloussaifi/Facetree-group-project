@@ -4,7 +4,7 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  
+
   content: {
     type: String,
     required: false,
@@ -19,7 +19,7 @@ const PostSchema = new mongoose.Schema({
   },
   author: {
     type: String,
-    required: true,
+    required: false,
   },
 });
 const Post = mongoose.model("post", PostSchema);

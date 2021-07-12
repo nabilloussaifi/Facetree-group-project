@@ -8,7 +8,9 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
 const Post = require("./models/post.js");
+const ejs = require("ejs");
 
+app.use(express.static("public"));
 
 mongoose.connect(
   "mongodb+srv://facetree:fHRvTR9SYxWbHDp@cluster0.0z7nf.mongodb.net/facetreedb?retryWrites=true&w=majority",
@@ -65,13 +67,26 @@ app.post("/users/floor", (req, res) => {
     title: title,
     content: content,
     img: img,
-  })
-        newPost
-              .save()
-              .then(() => {
-                res.redirect("/floor");
-              })
-            })
+  });
+  newPost.save().then(() => {
+    res.redirect("/floor");
+  });
+});
+
+const dbPostSchema = {
+  title: String,
+  content: String,
+  img: String,
+  date: String,
+};
+
+const posts = mongoose.model("posts", dbPostSchema);
+
+app.get("/floor", async (req, res) => {
+  const dbposts = await posts.find({});
+  console.log(dbposts);
+  res.render("floor.ejs", { dbposts });
+});
 
 // app.use("/", routes);
 // app.use(app.router);

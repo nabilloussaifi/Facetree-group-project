@@ -46,25 +46,28 @@
         <button type="Submit" class="btn btn-outline-primary" id="submitbtn">Submit</button>
     </form>
     <hr>
+
+  <%dbposts.forEach(post => {%>    
     <div class="myposts">
         <div class="card border-primary mb-3" style="max-width: 60rem;">
             <div class="row">
                 <div class="col-3">
-                    <img class="col-12" src="https://picsum.photos/1000" alt="" id="postimg">
+                    <img class="col-12" src="<%= post.img %>" alt="" id="postimg">
                 </div>
                 <div class="col-9">
                     <div class="card-body">
-                        <h5 id="post title" class="card-header">Post Title</h5>
+                        <h5 id="post title" class="card-header"><%= post.title %></h5>
 
-                        <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sit placeat doloribus ea deserunt pariatur,
-                            expedita laboriosam reiciendis sint veritatis nesciunt.
+                        <p class="card-text"><%= post.content %>
                         </p>
-                        <div id="postdate">07.08.2021</div>
+                        <div id="postdate" ><%= post.date %></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+<%})%>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
       crossorigin="anonymous"></script>
