@@ -10,6 +10,7 @@ const passport = require("passport");
 const Post = require("./models/posts.js");
 const ejs = require("ejs");
 const { ensureAuthenticated } = require("./config/auth");
+
 app.use(express.static("public"));
 
 mongoose.connect(
@@ -50,6 +51,7 @@ app.use(passport.session());
 //use flash
 app.use(flash());
 app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
   res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
   res.locals.error = req.flash("error");
@@ -67,9 +69,9 @@ app.get("/register", (req, res) => {
   res.render("register");
 });
 
-app.get("/floor", async (req, res) => {
-  const dbposts = await Post.find({});
-  console.log(dbposts);
+app.get("/floor", ensureAuthenticated, async (req, res) => {
+  const dbposts = await Post.find({}).populate('author');
+  // console.log(req.user);
   res.render("floor.ejs", { dbposts });
 });
 
@@ -82,32 +84,52 @@ app.get("/hall", ensureAuthenticated, async (req, res) => {
   }
 });
 
+const today = new Date();
+const dd = String(today.getDate()).padStart(2, '0');
+const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+const yyyy = today.getFullYear();
+const now = `${dd}/${mm}/${yyyy}`;
+
 app.post("/floor/createpost", (req, res) => {
   const newPost = new Post({
-    ...req.body,
+    ...req.body, date: now,
   });
   newPost.author = req.user._id;
   newPost.save().then(() => {
     res.redirect("/floor");
   });
 });
+app.get('/floor/editpost/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const post = await Post.findById(id)
+    res.render('updatepost.ejs', { post })
+  } catch (err) {
+    console.log(err)
+  }
+})
 
-//UPDATE
-app
-  .route("/edit/:id")
-  .get((req, res) => {
-    const id = req.params.id;
-    posts.find({}, (err, tasks) => {
-      res.render("updatepost.ejs", { todoTasks: tasks, idPost: _id });
-    });
-  })
-  .post((req, res) => {
-    const id = req.params.id;
-    TodoTask.findByIdAndUpdate(id, { content: req.body.content }, (err) => {
-      if (err) return res.send(500, err);
-      res.redirect("/");
-    });
-  });
+app.post('/floor/editpost/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    await Post.findByIdAndUpdate(id, req.body)
+    res.redirect('/floor')
+  } catch (err) {
+    console.log(err)
+  }
+})
+app.post('/floor/deletepost/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    await Post.findByIdAndDelete(id)
+    res.redirect('/floor')
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+
+
 
 app.listen(process.env.PORT || 3000, () =>
   console.log("Server Up and running")

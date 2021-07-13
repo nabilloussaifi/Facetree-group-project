@@ -32,52 +32,28 @@
                     Username
                 </h3>
 
-                <form action="/floor/editpost" method="POST" id="postform">
-                    <input type="text" name="title" class="form-control" id="title" placeholder="Title" required>
-                    <input type="text" name="content" class="form-control" id="content" placeholder="Content" required>
-                    <input type="url" name="img" class="form-control" id="imgurl" placeholder="Image">
-                    <button type="Submit" class="btn btn-outline-primary" id="submitbtn">Edit</button>
+                <form action="/floor/editpost/<%= post.id%>" method="POST" id="postform">
+                    <input type="text" name="title" class="form-control" id="title" placeholder="Title"
+                        value="<%= post.title%>" required>
+                    <input type="text" name="content" class="form-control" id="content" placeholder="Content"
+                        value="<%= post.content%>" required>
+                    <input type="url" name="img" class="form-control" id="imgurl" placeholder="Image"
+                        value="<%= post.img%>">
+                    <button type="Submit" class="btn btn-outline-primary" id="submitbtn">Submit</button>
                     <a href="/floor" class="cancel">Cancel</a>
                 </form>
                 <hr>
 
-                <%dbposts.forEach(post=> {%>
-                    <div class="myposts">
-                        <div class="card border-primary mb-3" style="max-width: 60rem;">
-                            <div class="row">
-                                <div class="col-3">
-                                    <img class="col-12" src="<%= post.img %>" alt="" id="postimg">
-                                </div>
-                                <div class="col-9">
-                                    <div class="card-body">
-                                        <h5 id="post title" class="card-header">
-                                            <%= post.title %>
-                                        </h5>
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                    crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+                    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+                    crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+                    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+                    crossorigin="anonymous"></script>
 
-                                        <p class="card-text">
-                                            <%= post.content %>
-                                        </p>
-                                        <div id="postdate">
-                                            <%= post.date %>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <%})%>
-
-                        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-                            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-                            crossorigin="anonymous"></script>
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-                            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-                            crossorigin="anonymous"></script>
-                        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-                            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-                            crossorigin="anonymous"></script>
-                        <script src="/static/assets/js/login.js"></script>
-                        <script src="/static/assets/js/floor.js"></script>
 </body>
 
 </html>

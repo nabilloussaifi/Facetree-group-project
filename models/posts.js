@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const postSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -14,8 +15,8 @@ const postSchema = new mongoose.Schema({
     required: false,
   },
   date: {
-    type: Date,
-    default: Date.now,
+    type: String,
+
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
