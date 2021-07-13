@@ -58,8 +58,6 @@ app.use((req, res, next) => {
 
 app.use("/users", require("./routes/users"));
 
-
-
 //login page
 app.get("/", (req, res) => {
   res.render("login");
@@ -75,24 +73,41 @@ app.get("/floor", async (req, res) => {
   res.render("floor.ejs", { dbposts });
 });
 
-app.get('/hall', ensureAuthenticated, async (req, res) => {
+app.get("/hall", ensureAuthenticated, async (req, res) => {
   try {
-    const posts = await Post.find({}).populate('author')
-    res.render('hall.ejs', { posts })
-  } catch (err) { console.log(err) }
-})
+    const posts = await Post.find({}).populate("author");
+    res.render("hall.ejs", { posts });
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 app.post("/floor/createpost", (req, res) => {
-
   const newPost = new Post({
-    ...req.body
+    ...req.body,
   });
-  newPost.author = req.user._id
+  newPost.author = req.user._id;
   newPost.save().then(() => {
     res.redirect("/floor");
   });
 });
 
+//UPDATE
+app
+  .route("/edit/:id")
+  .get((req, res) => {
+    const id = req.params.id;
+    posts.find({}, (err, tasks) => {
+      res.render("updatepost.ejs", { todoTasks: tasks, idPost: _id });
+    });
+  })
+  .post((req, res) => {
+    const id = req.params.id;
+    TodoTask.findByIdAndUpdate(id, { content: req.body.content }, (err) => {
+      if (err) return res.send(500, err);
+      res.redirect("/");
+    });
+  });
 
 app.listen(process.env.PORT || 3000, () =>
   console.log("Server Up and running")
