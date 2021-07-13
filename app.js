@@ -78,7 +78,6 @@ app.get("/floor", async (req, res) => {
 app.get('/hall', ensureAuthenticated, async (req, res) => {
   try {
     const posts = await Post.find({}).populate('author')
-
     res.render('hall.ejs', { posts })
   } catch (err) { console.log(err) }
 })
