@@ -7,9 +7,9 @@ const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
-const Post = require("./models/post.js");
+const Post = require("./models/posts.js");
 const ejs = require("ejs");
-
+const { ensureAuthenticated } = require("./config/auth");
 app.use(express.static("public"));
 
 mongoose.connect(
@@ -56,41 +56,44 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/", require("./routes/index"));
 app.use("/users", require("./routes/users"));
-app.use("/floor", require("./routes/floor"));
 
-app.post("/users/floor", (req, res) => {
-  //console.log(req.body);
-  const { title, content, img } = req.body;
+
+
+//login page
+app.get("/", (req, res) => {
+  res.render("login");
+});
+//register page
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+
+app.get("/floor", async (req, res) => {
+  const dbposts = await Post.find({});
+  console.log(dbposts);
+  res.render("floor.ejs", { dbposts });
+});
+
+app.get('/hall', ensureAuthenticated, async (req, res) => {
+  try {
+    const posts = await Post.find({}).populate('author')
+
+    res.render('hall.ejs', { posts })
+  } catch (err) { console.log(err) }
+})
+
+app.post("/floor/createpost", (req, res) => {
+
   const newPost = new Post({
-    title: title,
-    content: content,
-    img: img,
+    ...req.body
   });
+  newPost.author = req.user._id
   newPost.save().then(() => {
     res.redirect("/floor");
   });
 });
 
-const dbPostSchema = {
-  title: String,
-  content: String,
-  img: String,
-  date: String,
-};
-
-const posts = mongoose.model("posts", dbPostSchema);
-
-app.get("/floor", async (req, res) => {
-  const dbposts = await posts.find({});
-  console.log(dbposts);
-  res.render("floor.ejs", { dbposts });
-});
-
-// app.use("/", routes);
-// app.use(app.router);
-// routes.initialize(app);
 
 app.listen(process.env.PORT || 3000, () =>
   console.log("Server Up and running")
