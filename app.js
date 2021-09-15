@@ -10,11 +10,12 @@ const passport = require("passport");
 const Post = require("./models/posts.js");
 const ejs = require("ejs");
 const { ensureAuthenticated } = require("./config/auth");
+require('dotenv').config();
+
 
 app.use(express.static("public"));
 
-mongoose.connect(
-  "mongodb+srv://facetree:fHRvTR9SYxWbHDp@cluster0.0z7nf.mongodb.net/facetreedb?retryWrites=true&w=majority",
+mongoose.connect(process.env.MONGO_URI,
   { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
@@ -131,6 +132,6 @@ app.post('/floor/deletepost/:id', async (req, res) => {
 
 
 
-app.listen(process.env.PORT || 3000, () =>
+app.listen(process.env.PORT || 4000, () =>
   console.log("Server Up and running")
 );
